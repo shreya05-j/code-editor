@@ -1,12 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import CodeEditor from "./components/CodeEditor";
 
 function App() {
+  const [code, setCode] = useState(
+    "// Start typing JavaScript\nconsole.log('Hello, Editor');"
+  );
+
   return (
-    <div style={{ padding: "20px", fontSize: "18px" }}>
-      Code Editor Project Started
+    <div style={{ height: "100vh" }}>
+      <CodeEditor code={code} onChange={setCode} />
     </div>
   );
 }
