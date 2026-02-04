@@ -54,10 +54,11 @@ const addNewFile = () => {
   setActiveFileId(newId);
 };
 const handleRun = () => {
-  setOutput("Running...");
+  setOutput("");
   const result = runJavaScript(activeFile.content);
   setOutput(result || "No output");
 };
+
 
 
 
