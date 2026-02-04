@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CodeEditor from "./components/CodeEditor";
+import FileExplorer from "./components/FileExplorer";
 
 const initialFiles = [
   {
@@ -35,11 +36,19 @@ function App() {
   };
 
   return (
-    <div style={{ height: "100vh" }}>
-      <CodeEditor
-        code={activeFile.content}
-        onChange={updateFileContent}
+    <div style={{ display: "flex", height: "100vh" }}>
+      <FileExplorer
+        files={files}
+        activeFileId={activeFileId}
+        onSelectFile={setActiveFileId}
       />
+
+      <div style={{ flex: 1 }}>
+        <CodeEditor
+          code={activeFile.content}
+          onChange={updateFileContent}
+        />
+      </div>
     </div>
   );
 }
