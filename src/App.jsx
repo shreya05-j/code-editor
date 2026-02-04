@@ -1,3 +1,4 @@
+import OutputPanel from "./components/OutputPanel";
 import TopBar from "./components/TopBar";
 import Tabs from "./components/Tabs";
 import { useState } from "react";
@@ -22,6 +23,8 @@ const initialFiles = [
 function App() {
   const [files, setFiles] = useState(initialFiles);
   const [activeFileId, setActiveFileId] = useState("1");
+  const [output, setOutput] = useState("");
+
 
   const activeFile = files.find(
     (file) => file.id === activeFileId
@@ -77,7 +80,10 @@ const handleRun = () => {
       onChange={updateFileContent}
     />
   </div>
+
+  <OutputPanel output={output} />
 </div>
+
 
 
     </div>
