@@ -1,16 +1,96 @@
-# React + Vite
+# Web-Based Code Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lightweight, web-based code editor inspired by modern IDEs such as VS Code.  
+This project is built to demonstrate strong frontend architecture, state management, and editor tooling concepts using React.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Overview
 
-## React Compiler
+This application simulates the core behavior of a real code editor, including file management, tab navigation, and an interactive editing environment. The focus is on clean component design, predictable state flow, and scalability for future features such as code execution and persistence.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Features Implemented
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Monaco Editor integration for rich code editing
+- Multi-file support with file explorer
+- Tab-based file navigation
+- Active file state synchronization
+- Dynamic file creation
+- Run button interface
+- Output panel integrated with application state
+- Modular and maintainable component structure
+
+---
+
+## Tech Stack
+
+- React (Vite)
+- Monaco Editor
+- JavaScript
+- CSS (inline styles for layout control)
+
+---
+
+## Folder Structure
+
+src/
+├── components/
+│ ├── CodeEditor.jsx
+│ ├── FileExplorer.jsx
+│ ├── Tabs.jsx
+│ ├── TopBar.jsx
+│ └── OutputPanel.jsx
+├── App.jsx
+└── main.jsx
+
+
+---
+
+## Architecture Explanation
+
+- `App.jsx` acts as the central state manager
+- Files are represented as objects containing id, name, language, and content
+- A single active file controls the editor, tabs, and explorer state
+- All child components are stateless and receive data via props
+- The editor is fully controlled through React state
+
+This design mirrors real-world editor architecture and ensures predictable behavior.
+
+---
+
+## Current Status
+
+- Editor UI and layout completed
+- File system logic implemented
+- Output panel wired with Run action
+- Code execution logic to be added next
+
+---
+
+## Planned Enhancements
+
+- Safe JavaScript execution using sandboxed iframe
+- Console output and error capturing
+- Theme switching
+- Autosave using localStorage
+- Support for additional languages
+
+---
+
+## Author
+
+Shreya Jaiswal  
+B.Tech Computer Science and Engineering  
+Jagran Lakecity University
+
+---
+
+## Purpose of This Project
+
+This project demonstrates:
+- Strong React fundamentals
+- Clear state-driven design
+- Component reusability
+- Practical understanding of developer tools
