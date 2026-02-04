@@ -9,11 +9,11 @@ function FileExplorer({
   return (
     <div
       style={{
-        width: "220px",
+        width: "100%",
+        height: "100%",
         backgroundColor: theme.colors.bgPanel,
         color: theme.colors.textPrimary,
         padding: theme.spacing.md,
-        borderRight: `1px solid ${theme.colors.border}`,
         boxSizing: "border-box",
         fontSize: theme.fontSize.small,
       }}
@@ -49,25 +49,30 @@ function FileExplorer({
 
         return (
           <div
-  key={file.id}
-  onClick={() => onSelectFile(file.id)}
-  style={{
-    padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-    cursor: "pointer",
-    backgroundColor: isActive
-      ? theme.colors.bgActive
-      : "transparent",
-    color: isActive
-      ? theme.colors.textPrimary
-      : theme.colors.textMuted,
-    borderLeft: isActive
-      ? `2px solid ${theme.colors.accent}`
-      : "2px solid transparent",
-  }}
->
-  {file.name}
-</div>
+            key={file.id}
+            onClick={() => onSelectFile(file.id)}
+            style={{
+              padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+              cursor: "pointer",
 
+              backgroundColor: isActive
+                ? theme.colors.bgActive
+                : "transparent",
+
+              color: isActive
+                ? theme.colors.textPrimary
+                : theme.colors.textMuted,
+
+              borderLeft: isActive
+                ? `2px solid ${theme.colors.accent}`
+                : "2px solid transparent",
+
+              transition:
+                "background-color 0.12s ease, color 0.12s ease",
+            }}
+          >
+            {file.name}
+          </div>
         );
       })}
     </div>

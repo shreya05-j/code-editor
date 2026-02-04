@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { theme } from "../theme";
 
 function OutputPanel({ output }) {
   const outputRef = useRef(null);
@@ -14,23 +15,46 @@ function OutputPanel({ output }) {
     <div
       ref={outputRef}
       style={{
+        width: "100%",
         height: "150px",
-        backgroundColor: "#111",
-        color: "#d4d4d4",
-        padding: "10px",
-        borderTop: "1px solid #333",
+        boxSizing: "border-box",
+
+        backgroundColor: theme.colors.bgMain,
+        color: theme.colors.textPrimary,
+
+        padding: theme.spacing.md,
+        borderTop: `1px solid ${theme.colors.border}`,
+
         fontFamily: "monospace",
+        fontSize: theme.fontSize.small,
+
         overflowY: "auto",
       }}
     >
-      <div style={{ color: "#6a9955", marginBottom: "6px" }}>
+      <div
+        style={{
+          color: theme.colors.textMuted,
+          marginBottom: theme.spacing.xs,
+          userSelect: "none",
+        }}
+      >
         Output
       </div>
 
       {output ? (
-        <pre style={{ margin: 0 }}>{output}</pre>
+        <pre
+          style={{
+            margin: 0,
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+          }}
+        >
+          {output}
+        </pre>
       ) : (
-        <div style={{ color: "#777" }}>No output yet</div>
+        <div style={{ color: theme.colors.textMuted }}>
+          No output yet
+        </div>
       )}
     </div>
   );
