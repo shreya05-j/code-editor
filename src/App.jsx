@@ -53,8 +53,9 @@ const addNewFile = () => {
   setActiveFileId(newId);
 };
 const handleRun = () => {
-  console.log("Run clicked");
+  setOutput("Running...");
 };
+
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
