@@ -1,3 +1,4 @@
+import TopBar from "./components/TopBar";
 import Tabs from "./components/Tabs";
 import { useState } from "react";
 import CodeEditor from "./components/CodeEditor";
@@ -48,6 +49,9 @@ const addNewFile = () => {
   setFiles((prev) => [...prev, newFile]);
   setActiveFileId(newId);
 };
+const handleRun = () => {
+  console.log("Run clicked");
+};
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
@@ -59,6 +63,8 @@ const addNewFile = () => {
 />
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+  <TopBar onRun={handleRun} />
+
   <Tabs
     files={files}
     activeFileId={activeFileId}
