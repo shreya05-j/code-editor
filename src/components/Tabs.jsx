@@ -1,26 +1,40 @@
+import { theme } from "../theme";
+
 function Tabs({ files, activeFileId, onSelectFile }) {
   return (
     <div
       style={{
         display: "flex",
-        backgroundColor: "#2d2d2d",
-        color: "#fff",
+        backgroundColor: theme.colors.bgPanel,
+        borderBottom: `1px solid ${theme.colors.border}`,
+        fontSize: theme.fontSize.small,
       }}
     >
-      {files.map((file) => (
-        <div
-          key={file.id}
-          onClick={() => onSelectFile(file.id)}
-          style={{
-            padding: "8px 12px",
-            cursor: "pointer",
-            backgroundColor:
-              file.id === activeFileId ? "#1e1e1e" : "transparent",
-          }}
-        >
-          {file.name}
-        </div>
-      ))}
+      {files.map((file) => {
+        const isActive = file.id === activeFileId;
+
+        return (
+          <div
+            key={file.id}
+            onClick={() => onSelectFile(file.id)}
+            style={{
+              padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+              cursor: "pointer",
+              backgroundColor: isActive
+                ? theme.colors.bgMain
+                : "transparent",
+              color: isActive
+                ? theme.colors.textPrimary
+                : theme.colors.textMuted,
+              borderBottom: isActive
+                ? `2px solid ${theme.colors.accent}`
+                : "2px solid transparent",
+            }}
+          >
+            {file.name}
+          </div>
+        );
+      })}
     </div>
   );
 }

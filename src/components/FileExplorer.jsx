@@ -1,3 +1,5 @@
+import { theme } from "../theme";
+
 function FileExplorer({
   files,
   activeFileId,
@@ -8,10 +10,12 @@ function FileExplorer({
     <div
       style={{
         width: "220px",
-        backgroundColor: "#1e1e1e",
-        color: "#ffffff",
-        padding: "10px",
+        backgroundColor: theme.colors.bgPanel,
+        color: theme.colors.textPrimary,
+        padding: theme.spacing.md,
+        borderRight: `1px solid ${theme.colors.border}`,
         boxSizing: "border-box",
+        fontSize: theme.fontSize.small,
       }}
     >
       <div
@@ -19,38 +23,53 @@ function FileExplorer({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "10px",
+          marginBottom: theme.spacing.sm,
         }}
       >
-        <h4 style={{ margin: 0 }}>Files</h4>
+        <span style={{ color: theme.colors.textMuted }}>
+          Files
+        </span>
+
         <button
           onClick={onAddFile}
           style={{
             background: "transparent",
             border: "none",
-            color: "#fff",
+            color: theme.colors.textMuted,
             cursor: "pointer",
-            fontSize: "18px",
+            fontSize: "16px",
           }}
         >
           +
         </button>
       </div>
 
-      {files.map((file) => (
-        <div
-          key={file.id}
-          onClick={() => onSelectFile(file.id)}
-          style={{
-            padding: "6px 8px",
-            cursor: "pointer",
-            backgroundColor:
-              file.id === activeFileId ? "#333" : "transparent",
-          }}
-        >
-          {file.name}
-        </div>
-      ))}
+      {files.map((file) => {
+        const isActive = file.id === activeFileId;
+
+        return (
+          <div
+  key={file.id}
+  onClick={() => onSelectFile(file.id)}
+  style={{
+    padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+    cursor: "pointer",
+    backgroundColor: isActive
+      ? theme.colors.bgActive
+      : "transparent",
+    color: isActive
+      ? theme.colors.textPrimary
+      : theme.colors.textMuted,
+    borderLeft: isActive
+      ? `2px solid ${theme.colors.accent}`
+      : "2px solid transparent",
+  }}
+>
+  {file.name}
+</div>
+
+        );
+      })}
     </div>
   );
 }

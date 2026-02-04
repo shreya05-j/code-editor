@@ -1,30 +1,30 @@
-function TopBar({ onRun, isRunning }) {
+import { theme } from "../theme";
 
+function TopBar({ onRun, isRunning }) {
   return (
     <div
       style={{
         display: "flex",
         alignItems: "center",
-        padding: "6px 10px",
-        backgroundColor: "#1e1e1e",
-        borderBottom: "1px solid #333",
+        height: "32px",
+        padding: `0 ${theme.spacing.md}`,
+        backgroundColor: theme.colors.bgMain,
+        borderBottom: `1px solid ${theme.colors.border}`,
       }}
     >
-      <button
-  onClick={onRun}
-  disabled={isRunning}
-  style={{
-    backgroundColor: isRunning ? "#555" : "#0e639c",
-    color: "#fff",
-    border: "none",
-    padding: "6px 12px",
-    cursor: isRunning ? "not-allowed" : "pointer",
-    borderRadius: "3px",
-  }}
->
-  {isRunning ? "Running..." : "Run"}
-</button>
-
+      <div
+        onClick={!isRunning ? onRun : undefined}
+        style={{
+          fontSize: theme.fontSize.small,
+          color: isRunning
+            ? theme.colors.textMuted
+            : theme.colors.accent,
+          cursor: isRunning ? "default" : "pointer",
+          userSelect: "none",
+        }}
+      >
+        {isRunning ? "Running…" : "Run"}
+      </div>
     </div>
   );
 }
