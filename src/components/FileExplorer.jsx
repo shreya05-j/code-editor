@@ -1,4 +1,9 @@
-function FileExplorer({ files, activeFileId, onSelectFile }) {
+function FileExplorer({
+  files,
+  activeFileId,
+  onSelectFile,
+  onAddFile,
+}) {
   return (
     <div
       style={{
@@ -9,7 +14,28 @@ function FileExplorer({ files, activeFileId, onSelectFile }) {
         boxSizing: "border-box",
       }}
     >
-      <h4 style={{ marginBottom: "10px" }}>Files</h4>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "10px",
+        }}
+      >
+        <h4 style={{ margin: 0 }}>Files</h4>
+        <button
+          onClick={onAddFile}
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "#fff",
+            cursor: "pointer",
+            fontSize: "18px",
+          }}
+        >
+          +
+        </button>
+      </div>
 
       {files.map((file) => (
         <div

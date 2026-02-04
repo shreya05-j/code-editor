@@ -1,3 +1,4 @@
+import Tabs from "./components/Tabs";
 import { useState } from "react";
 import CodeEditor from "./components/CodeEditor";
 import FileExplorer from "./components/FileExplorer";
@@ -34,21 +35,45 @@ function App() {
       )
     );
   };
+const addNewFile = () => {
+  const newId = Date.now().toString();
+
+  const newFile = {
+    id: newId,
+    name: `file${files.length + 1}.js`,
+    language: "javascript",
+    content: "// New file\n",
+  };
+
+  setFiles((prev) => [...prev, newFile]);
+  setActiveFileId(newId);
+};
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <FileExplorer
-        files={files}
-        activeFileId={activeFileId}
-        onSelectFile={setActiveFileId}
-      />
+  files={files}
+  activeFileId={activeFileId}
+  onSelectFile={setActiveFileId}
+  onAddFile={addNewFile}
+/>
 
-      <div style={{ flex: 1 }}>
-        <CodeEditor
-          code={activeFile.content}
-          onChange={updateFileContent}
-        />
-      </div>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+  <Tabs
+    files={files}
+    activeFileId={activeFileId}
+    onSelectFile={setActiveFileId}
+  />
+
+  <div style={{ flex: 1 }}>
+    <CodeEditor
+      code={activeFile.content}
+      onChange={updateFileContent}
+    />
+  </div>
+</div>
+
+
     </div>
   );
 }
