@@ -1,3 +1,4 @@
+import { runJavaScript } from "./utils/runCode";
 import OutputPanel from "./components/OutputPanel";
 import TopBar from "./components/TopBar";
 import Tabs from "./components/Tabs";
@@ -54,7 +55,10 @@ const addNewFile = () => {
 };
 const handleRun = () => {
   setOutput("Running...");
+  const result = runJavaScript(activeFile.content);
+  setOutput(result || "No output");
 };
+
 
 
   return (
