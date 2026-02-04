@@ -1,4 +1,5 @@
-function TopBar({ onRun }) {
+function TopBar({ onRun, isRunning }) {
+
   return (
     <div
       style={{
@@ -10,18 +11,20 @@ function TopBar({ onRun }) {
       }}
     >
       <button
-        onClick={onRun}
-        style={{
-          backgroundColor: "#0e639c",
-          color: "#fff",
-          border: "none",
-          padding: "6px 12px",
-          cursor: "pointer",
-          borderRadius: "3px",
-        }}
-      >
-        Run
-      </button>
+  onClick={onRun}
+  disabled={isRunning}
+  style={{
+    backgroundColor: isRunning ? "#555" : "#0e639c",
+    color: "#fff",
+    border: "none",
+    padding: "6px 12px",
+    cursor: isRunning ? "not-allowed" : "pointer",
+    borderRadius: "3px",
+  }}
+>
+  {isRunning ? "Running..." : "Run"}
+</button>
+
     </div>
   );
 }

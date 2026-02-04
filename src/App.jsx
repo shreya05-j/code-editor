@@ -25,6 +25,7 @@ function App() {
   const [files, setFiles] = useState(initialFiles);
   const [activeFileId, setActiveFileId] = useState("1");
   const [output, setOutput] = useState("");
+  const [isRunning, setIsRunning] = useState(false);
 
 
   const activeFile = files.find(
@@ -54,10 +55,19 @@ const addNewFile = () => {
   setActiveFileId(newId);
 };
 const handleRun = () => {
+  setIsRunning(true);
   setOutput("");
-  const result = runJavaScript(activeFile.content);
-  setOutput(result || "No output");
+
+  setTimeout(() => {
+    const startTime = new Date().toLocaleTimeString();
+    const result = runJavaScript(activeFile.content);
+
+    setOutput(`[${startTime}]\n${result || "No output"}`);
+    setIsRunning(false);
+  }, 0);
 };
+
+
 
 
 
@@ -72,7 +82,7 @@ const handleRun = () => {
 />
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-  <TopBar onRun={handleRun} />
+ <TopBar onRun={handleRun} isRunning={isRunning} />
 
   <Tabs
     files={files}

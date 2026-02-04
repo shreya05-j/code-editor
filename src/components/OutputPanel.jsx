@@ -1,6 +1,18 @@
+import { useEffect, useRef } from "react";
+
 function OutputPanel({ output }) {
+  const outputRef = useRef(null);
+
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop =
+        outputRef.current.scrollHeight;
+    }
+  }, [output]);
+
   return (
     <div
+      ref={outputRef}
       style={{
         height: "150px",
         backgroundColor: "#111",
