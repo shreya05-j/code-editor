@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { runJavaScript } from "./utils/runCode";
 
 import FileExplorer from "./components/FileExplorer";
@@ -32,6 +32,26 @@ function App() {
     (file) => file.id === activeFileId
   );
 
+  /* ---------------- File persistence ---------------- */
+
+  // Restore last opened file on load
+  useEffect(() => {
+    const savedFileId = localStorage.getItem("activeFileId");
+
+    if (savedFileId && initialFiles.some(f => f.id === savedFileId)) {
+      setActiveFileId(savedFileId);
+    }
+  }, []);
+
+  // Save active file whenever it changes
+  useEffect(() => {
+    if (activeFileId) {
+      localStorage.setItem("activeFileId", activeFileId);
+    }
+  }, [activeFileId]);
+
+  /* ---------------- Editor logic ---------------- */
+
   const updateFileContent = (newContent) => {
     setFiles((prev) =>
       prev.map((file) =>
@@ -59,7 +79,7 @@ function App() {
   };
 
   const handleRun = () => {
-    if (!activeFile) return;
+    if (!activeFile || isRunning) return;
 
     setIsRunning(true);
     setOutput("Running...");
@@ -72,6 +92,31 @@ function App() {
       setIsRunning(false);
     }, 0);
   };
+
+  /* ---------------- Keyboard shortcut ---------------- */
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const isMac = navigator.platform
+        .toUpperCase()
+        .includes("MAC");
+
+      const isRunShortcut =
+        (isMac && e.metaKey && e.key === "Enter") ||
+        (!isMac && e.ctrlKey && e.key === "Enter");
+
+      if (isRunShortcut) {
+        e.preventDefault();
+        handleRun();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () =>
+      window.removeEventListener("keydown", handleKeyDown);
+  }, [handleRun]);
+
+  /* ---------------- Layout ---------------- */
 
   return (
     <div
@@ -101,7 +146,7 @@ function App() {
         />
       </div>
 
-      {/* Main editor area */}
+      {/* Main editor */}
       <div
         style={{
           flex: 1,
