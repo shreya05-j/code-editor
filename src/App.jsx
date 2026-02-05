@@ -7,7 +7,7 @@ import Tabs from "./components/Tabs";
 import TopBar from "./components/TopBar";
 import OutputPanel from "./components/OutputPanel";
 
-const initialFiles = [
+const defaultFiles = [
   {
     id: "1",
     name: "index.js",
@@ -23,39 +23,50 @@ const initialFiles = [
 ];
 
 function App() {
-  const [files, setFiles] = useState(initialFiles);
-  const [activeFileId, setActiveFileId] = useState("1");
+  /* ---------- STATE (RESTORED SAFELY) ---------- */
+
+  const [files, setFiles] = useState(() => {
+    const saved = localStorage.getItem("editorFiles");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch {}
+    }
+    return defaultFiles;
+  });
+
+  const [activeFileId, setActiveFileId] = useState(() => {
+    return localStorage.getItem("activeFileId") || "1";
+  });
+
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
 
   const activeFile = files.find(
     (file) => file.id === activeFileId
-  );
+  ) || files[0];
 
-  /* ---------------- File persistence ---------------- */
+  /* ---------- AUTOSAVE (BULLETPROOF) ---------- */
 
-  // Restore last opened file on load
   useEffect(() => {
-    const savedFileId = localStorage.getItem("activeFileId");
+    localStorage.setItem("editorFiles", JSON.stringify(files));
+  }, [files]);
 
-    if (savedFileId && initialFiles.some(f => f.id === savedFileId)) {
-      setActiveFileId(savedFileId);
-    }
-  }, []);
-
-  // Save active file whenever it changes
   useEffect(() => {
     if (activeFileId) {
       localStorage.setItem("activeFileId", activeFileId);
     }
   }, [activeFileId]);
 
-  /* ---------------- Editor logic ---------------- */
+  /* ---------- EDITOR LOGIC ---------- */
 
   const updateFileContent = (newContent) => {
     setFiles((prev) =>
       prev.map((file) =>
-        file.id === activeFileId
+        file.id === activeFile.id
           ? { ...file, content: newContent }
           : file
       )
@@ -93,30 +104,29 @@ function App() {
     }, 0);
   };
 
-  /* ---------------- Keyboard shortcut ---------------- */
+  /* ---------- KEYBOARD SHORTCUT ---------- */
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handler = (e) => {
       const isMac = navigator.platform
         .toUpperCase()
         .includes("MAC");
 
-      const isRunShortcut =
+      const runShortcut =
         (isMac && e.metaKey && e.key === "Enter") ||
         (!isMac && e.ctrlKey && e.key === "Enter");
 
-      if (isRunShortcut) {
+      if (runShortcut) {
         e.preventDefault();
         handleRun();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () =>
-      window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, [handleRun]);
 
-  /* ---------------- Layout ---------------- */
+  /* ---------- UI ---------- */
 
   return (
     <div
@@ -128,46 +138,40 @@ function App() {
         overflow: "hidden",
       }}
     >
-      {/* Sidebar */}
       <div
         style={{
           width: "220px",
-          height: "100%",
           backgroundColor: "#252526",
-          flexShrink: 0,
           borderRight: "1px solid #333",
         }}
       >
         <FileExplorer
           files={files}
-          activeFileId={activeFileId}
+          activeFileId={activeFile.id}
           onSelectFile={setActiveFileId}
           onAddFile={addNewFile}
         />
       </div>
 
-      {/* Main editor */}
       <div
         style={{
           flex: 1,
-          height: "100%",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "#1e1e1e",
-          overflow: "hidden",
         }}
       >
         <TopBar onRun={handleRun} isRunning={isRunning} />
 
         <Tabs
           files={files}
-          activeFileId={activeFileId}
+          activeFileId={activeFile.id}
           onSelectFile={setActiveFileId}
         />
 
-        <div style={{ flex: 1, overflow: "hidden" }}>
+        <div style={{ flex: 1 }}>
           <CodeEditor
-            code={activeFile?.content || ""}
+            code={activeFile.content}
             onChange={updateFileContent}
           />
         </div>
